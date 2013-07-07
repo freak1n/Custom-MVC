@@ -38,7 +38,6 @@ final class Loader {
 				
 				$f = str_replace('\\', DIRECTORY_SEPARATOR, $class);
 				$f = substr_replace($f, $value, 0, strlen($key)).'.php';
-				
 				$f = realpath($f);
 				
 				if ($f AND is_readable($f))
@@ -59,7 +58,7 @@ final class Loader {
 	 * [register_namespace description]
 	 * @param  [type] $namespace Name of namespace
 	 * @param  [type] $path      Real path
-	 * @return [type]            [description]
+	 * @return 
 	 */
 	public static function register_namespace($namespace, $path)
 	{
@@ -97,7 +96,7 @@ final class Loader {
 
 	public static function remove_namespace($namespace)
 	{
-
+		unset(self::$namespaces[$namespace]);
 	}
 
 	public static function clear_namespaces()
