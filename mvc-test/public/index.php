@@ -7,7 +7,7 @@ require_once ('../../mvc-realization/App.php');
 $app = \php_mvc\App::get_instance();
 $app->run();
 
-var_dump($app->get_config()->app);
+//var_dump($app->get_config()->app);
 
 
 
