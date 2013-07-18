@@ -3,6 +3,10 @@ namespace php_mvc;
 
 class FrontController {
 	private static $instance = null;
+	private $name_space = null;
+	private $controller = null;
+	private $method = null;
+
 
 	public function __construct()
 	{
@@ -17,6 +21,34 @@ class FrontController {
 		$a = new \php_mvc\Routers\DefaultRouter();
 		$_uri = $a->get_uri();
 		$routes = \php_mvc\App::get_instance()->get_config()->routes;
+
+		// Set the namespace by route
+		if (is_array($routes) AND count($routes)>0)
+		{
+			foreach ($routes as $key => $value) 
+			{
+				if (stripos($_uri, $key) === 0 AND isset($value['namespace']))
+				{
+					$this->name_space = $value['namespace'];
+					break;
+				}	
+			}
+		}
+		else
+		{
+			throw new \Exception('Default route is missing', 500);
+		}
+
+		// Using the default namespace
+		if ($this->name_space == null AND isset($routes['*']['namespace']))
+		{
+			$this->name_space = $routes['*']['namespace'];
+		}
+		elseif ($this->name_space == null AND !$routes['*']['namespace'])
+		{
+			throw new \Exception("Default route missing");
+		}
+		echo $this->name_space;
 
 		/* Version 1
 		// Setting the current controller

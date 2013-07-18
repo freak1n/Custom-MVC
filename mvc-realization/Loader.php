@@ -89,11 +89,16 @@ final class Loader {
 		}
 	}
 
+	/**
+	 * [register_namespaces description]
+	 * @param  array $ns name spaces for register
+	 */
 	public static function register_namespaces($ns)
 	{
 		if (is_array($ns))
 		{
-			foreach ($ns as $key => $value) {
+			foreach ($ns as $key => $value) 
+			{
 				self::register_namespace($key, $value);
 			}
 		}
