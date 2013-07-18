@@ -1,4 +1,5 @@
 <?php
-$cnf['test1'] = 'ok1';
-$cnf['test2'] = 'ok1';
+$cnf['default_controller'] = '';
+$cnf['default_method'] = '';
+$cnf['namespaces']['Controllers'] = realpath('../controllers');
 return $cnf;

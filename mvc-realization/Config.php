@@ -33,11 +33,11 @@ class Config {
 			// Clear old config data
 			$this->config_array = array();
 			$this->config_folder = $_config_folder.DIRECTORY_SEPARATOR;
-			/*$ns = $this->app['namespace'];
+			$ns = $this->app['namespaces'];
 			if(is_array($ns))
 			{
 				\php_mvc\Loader::register_namespaces($ns);
-			}*/
+			}
 		}
 		else 
 		{

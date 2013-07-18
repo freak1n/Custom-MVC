@@ -89,6 +89,20 @@ final class Loader {
 		}
 	}
 
+	public static function register_namespaces($ns)
+	{
+		if (is_array($ns))
+		{
+			foreach ($ns as $key => $value) {
+				self::register_namespace($key, $value);
+			}
+		}
+		else
+		{
+			throw new \Exception('Invalid namespaces');
+		}
+	}
+
 	public static function get_namespaces()
 	{
 		return self::$namespaces;

@@ -5,6 +5,7 @@ class App {
 	private static $instance = null;
 	private $config = null;
 	private $front_controller = null;
+	
 	private function __construct()
 	{
 		\php_mvc\Loader::register_namespace('php_mvc', dirname(__FILE__).DIRECTORY_SEPARATOR);
