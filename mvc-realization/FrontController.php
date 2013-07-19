@@ -27,9 +27,11 @@ class FrontController {
 		{
 			foreach ($routes as $key => $value) 
 			{
-				if (stripos($_uri, $key) === 0 AND isset($value['namespace']))
+				if (stripos($_uri, $key) === 0 && ($_uri==$key || stripos($_uri, $key.'/') === 0) && isset($value['namespace']))
 				{
+					
 					$this->name_space = $value['namespace'];
+					$_uri = substr($_uri, strlen($key)+1);
 					break;
 				}	
 			}
@@ -48,25 +50,31 @@ class FrontController {
 		{
 			throw new \Exception("Default route missing");
 		}
-		echo $this->name_space;
-
-		/* Version 1
-		// Setting the current controller
-		$controller = $a->get_controller();
-		if ($controller == null)
+		
+		$_params = explode('/', $_uri);
+		
+		if($_params[0]) 
 		{
-			$controller = $this->get_default_controller();
+			$this->controller = $_params[0];
+			// If we do not have controller and method, we do not have params
+			
+			if(isset($_params[1]))
+			{
+				$this->method = $_params[1];
+				// За да останат get параметрите
+				unset($_params[0], $_params[1]);
+				$this->params = array_values($_params);
+			}
+			else 
+			{
+				$this->method = $this->get_default_method();
+			}
 		}
-
-		// Setting the current method
-		$method = $a->get_method();
-
-		if ($method == null)
+		else 
 		{
-			$method = $this->get_default_method();
+			$this->controller = $this->get_default_controller();
+			$this->method = $this->get_default_method();
 		}
-
-		echo $controller." ".$method;*/
 	}	
 
 	public function get_default_controller()
