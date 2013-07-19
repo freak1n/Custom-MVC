@@ -1,5 +1,5 @@
 <?php
-$cnf['default_controller'] = 'index2';
-$cnf['default_method'] = '';
+$cnf['default_controller'] = 'Index';
+$cnf['default_method'] = 'Index';
 $cnf['namespaces']['Controllers'] = realpath('../controllers');
 return $cnf;
