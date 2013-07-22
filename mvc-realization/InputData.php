@@ -40,15 +40,49 @@ class InputData {
 		return array_key_exists($name, $this->post);
 	}
 
+	public function has_cookies($name)
+	{
+		return array_key_exists($name, $this->cookies);
+	}
+
+	// Get information from GET
 	public function get($id, $normalize = null, $default = null)
 	{
 		if ($this->has_get($id))
 		{
 			if ($normalize !== null)
 			{
-				
+				return \php_mvc\Common::normalize($this->get[$id], $normalize);
 			}
 			return $this->get[$id];
+		}
+		return $default;
+	}
+
+	// Get information from POST
+	public function post($name, $normalize = null, $default = null)
+	{
+		if ($this->has_post($name))
+		{
+			if ($normalize !== null)
+			{
+				return \php_mvc\Common::normalize($this->post[$name], $normalize);
+			}
+			return $this->post[$name];
+		}
+		return $default;
+	}
+
+	// Get information from COOKIES
+	public function cookies($name, $normalize = null, $default = null)
+	{
+		if ($this->has_cookies($name))
+		{
+			if ($normalize !== null)
+			{
+				return \php_mvc\Common::normalize($this->cookies[$name], $normalize);
+			}
+			return $this->cookies[$name];
 		}
 		return $default;
 	}

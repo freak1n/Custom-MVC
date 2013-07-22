@@ -5,7 +5,8 @@ class App {
 	private static $instance = null;
 	private $config = null;
 	private $front_controller = null;
-	
+	private $router = null;
+
 	private function __construct()
 	{
 		\php_mvc\Loader::register_namespace('php_mvc', dirname(__FILE__).DIRECTORY_SEPARATOR);
@@ -21,6 +22,16 @@ class App {
 	public function set_config_folder($path)
 	{
 		$this->config->set_config_folder($path);
+	}
+
+	public function get_router()
+	{
+		return $this->router;
+	}
+
+	public function set_router($router)
+	{
+		$this->router = $router;
 	}
 
 	/**
@@ -41,6 +52,25 @@ class App {
 		}
 
 		$this->front_controller = \php_mvc\FrontController::get_instance();
+		
+		// Set up the router
+		if ($this->router instanceof \php_mvc\Routers\IRouter)
+		{
+			$this->front_controller->set_router($this->router);
+		}
+		elseif ($this->router === 'JsonRPCRouter')
+		{
+			// TODO fix it when RPC is done
+			$this->front_controller->set_router(new \php_mvc\Routers\DefaultRouter());
+		}
+		elseif ($this->router === 'CLIRouter')
+		{
+			$this->front_controller->set_router(new \php_mvc\Routers\DefaultRouter());	
+		}
+		else
+		{
+			$this->front_controller->set_router(new \php_mvc\Routers\DefaultRouter());	
+		}
 		$this->front_controller->dispatch();
 	}
 
