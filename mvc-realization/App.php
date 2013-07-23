@@ -6,12 +6,18 @@ class App {
 	private $config = null;
 	private $front_controller = null;
 	private $router = null;
+	private $db_connections = array();
 
 	private function __construct()
 	{
 		\php_mvc\Loader::register_namespace('php_mvc', dirname(__FILE__).DIRECTORY_SEPARATOR);
 		\php_mvc\Loader::register_autoload();
 		$this->config = \php_mvc\Config::get_instance();
+		// Using default one config folder
+		if ($this->config->get_config_folder() == null)
+		{
+			$this->set_config_folder('../config');
+		}
 	}
 
 	public function get_config_folder()
@@ -72,6 +78,31 @@ class App {
 			$this->front_controller->set_router(new \php_mvc\Routers\DefaultRouter());	
 		}
 		$this->front_controller->dispatch();
+	}
+
+	public function get_db_connection($connection = 'default')
+	{
+		if ( ! isset($connection))
+		{
+			throw new \Exception('No connection identifier provider', 500);
+		}
+		
+		if (isset($this->db_connections[$connection]))
+		{
+			return $this->db_connections[$connection];
+		}
+		
+		$_cnf = $this->get_config()->database;
+		
+		if ( ! isset($_cnf[$connection]))
+		{
+			throw new \Exception('No valid connection identificator is provided', 500);
+		}
+		
+		$dbh = new \PDO($_cnf[$connection]['connection_uri'], $_cnf[$connection]['username'], 
+						$_cnf[$connection]['password'], $_cnf[$connection]['pdo_options']);
+		$this->db_connections[$connection] = $dbh;
+		return $dbh;
 	}
 
 	/**

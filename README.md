@@ -1,4 +1,4 @@
 Custom-MVC
 ==========
 
-Custom MVC with php
+Custom MVC framework  with php
