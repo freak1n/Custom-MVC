@@ -83,10 +83,18 @@ class App {
 		if ($_sess['autostart'])
 		{
 			if ($_sess['type'] === 'native')
-			{
-				$_sess_obj = new \php_mvc\Sessions\NativeSession($_sess['name'], $_sess['lifetime'], $_sess['path'], $_sess['domain'], $_sess['secure']);
+			{ 
+				$sess_obj = new \php_mvc\Sessions\NativeSession($_sess['name'], $_sess['lifetime'], $_sess['path'], $_sess['domain'], $_sess['secure']);
 			}
-			$this->set_session($_sess_obj);
+			elseif ($_sess['type'] === 'database')
+			{
+				$sess_obj = new \php_mvc\Sessions\DBSession($_sess['db_connection'], $_sess['name'], $_sess['db_table'], $_sess['lifetime'], $_sess['path'], $_sess['domain'], $_sess['secure']);
+			}
+			else 
+			{
+				throw new \Exception('No valid session', 500);
+			}
+			$this->set_session($sess_obj);
 		}
 
 		$this->front_controller->dispatch();
