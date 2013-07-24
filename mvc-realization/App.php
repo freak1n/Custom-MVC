@@ -7,6 +7,7 @@ class App {
 	private $front_controller = null;
 	private $router = null;
 	private $db_connections = array();
+	private $session = null;
 
 	private function __construct()
 	{
@@ -77,7 +78,28 @@ class App {
 		{
 			$this->front_controller->set_router(new \php_mvc\Routers\DefaultRouter());	
 		}
+
+		$_sess = $this->config->app['session'];
+		if ($_sess['autostart'])
+		{
+			if ($_sess['type'] === 'native')
+			{
+				$_sess_obj = new \php_mvc\Sessions\NativeSession($_sess['name'], $_sess['lifetime'], $_sess['path'], $_sess['domain'], $_sess['secure']);
+			}
+			$this->set_session($_sess_obj);
+		}
+
 		$this->front_controller->dispatch();
+	}
+
+	public function set_session(\php_mvc\Sessions\ISession $session)
+	{
+		$this->session = $session;
+	}
+
+	public function get_session()
+	{
+		return $this->session;
 	}
 
 	public function get_db_connection($connection = 'default')
