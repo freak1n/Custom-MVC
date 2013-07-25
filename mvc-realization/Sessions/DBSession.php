@@ -100,6 +100,6 @@ class DBSession extends \php_mvc\DB\SimpleDB implements \php_mvc\Sessions\ISessi
 
 	public function garbage_collector()
 	{
-		$this->prepare('DELETE FROM `'.$this->table_name.'` WHERE valid_until<?', array(time()))->execute();
+		$this->prepare('DELETE FROM `'.$this->table_name.' WHERE valid_until<?', array(time()))->execute();
 	}
 }
