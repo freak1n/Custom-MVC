@@ -10,7 +10,7 @@ class DBSession extends \php_mvc\DB\SimpleDB implements \php_mvc\Sessions\ISessi
 	private $path;
 	private $domain;
 	private $secure;
-	private $session_id;
+	private $session_id = null;
 	private $session_data = array();	
 
 	public function __construct($db_connection, $name, $table_name = 'session', $lifetime = 3600, $path = null, $domain = null, $secure = false)
@@ -23,6 +23,11 @@ class DBSession extends \php_mvc\DB\SimpleDB implements \php_mvc\Sessions\ISessi
 		$this->domain = $domain;
 		$this->secure = $secure;
 		$this->session_id = $_COOKIE[$name];
+		
+		if (rand(0, 50) == 1) 
+		{
+			$this->garbage_collector();
+		}
 
 		if (strlen($this->session_id) < 32)
 		{
@@ -70,7 +75,7 @@ class DBSession extends \php_mvc\DB\SimpleDB implements \php_mvc\Sessions\ISessi
 
 	public function get_session_id()
 	{
-
+		return $this->session_id;
 	}
 
 	public function save_session()
@@ -79,13 +84,22 @@ class DBSession extends \php_mvc\DB\SimpleDB implements \php_mvc\Sessions\ISessi
 		{
 			$this->prepare('UPDATE '.$this->table_name.' SET sess_data=?,valid_until=? WHERE sessid=?', 
 				array(serialize($this->session_data), (time() + $this->lifetime), $this->session_id))->execute();
-			setcookie($this->session_name, $this->session_id, (time() + $this->lifetime), $this->path, $this->domain, $this->secure, true);
+
+			setcookie($this->session_name, $this->session_id, (time() + $this->lifetime), $this->path, 
+				$this->domain, $this->secure, true);
 		}	
 	}
 
 	public function destroy_session()
 	{
-
+		if ($this->session_id) 
+		{
+			$this->prepare('DELETE FROM '.$this->table_name.' WHERE sessid=?', array($this->sessid))->execute();
+		}
 	}
 
+	public function garbage_collector()
+	{
+		$this->prepare('DELETE FROM `'.$this->table_name.'` WHERE valid_until<?', array(time()))->execute();
+	}
 }

@@ -10,5 +10,5 @@ $app = \php_mvc\App::get_instance();
 
 
 $app->run();
-$app->get_session()->counter+=1;
-echo $app->get_session()->counter;
+$app->get_session()->counter2+=1;
+echo $app->get_session()->counter2;
