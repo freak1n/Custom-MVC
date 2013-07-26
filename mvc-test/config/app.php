@@ -14,4 +14,5 @@ $cnf['session']['secure'] = false;
 $cnf['session']['db_connection'] = 'default';
 $cnf['session']['db_table'] = 'sessions';
 
+$cnf['view_directory'] = 'views';
 return $cnf;
