@@ -14,7 +14,7 @@ class View {
 	private function __construct()
 	{
 		$this->__view_path = \php_mvc\App::get_instance()->get_config()->app['views_directory'];
-		if ($this->__view_path == null) 
+		if ($this->__view_path == null)
 		{
 			$this->__view_path = realpath('../views/');
 		}

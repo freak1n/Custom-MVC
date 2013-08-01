@@ -5,6 +5,10 @@ namespace Controllers;
 class Index {
 	public function index() 
 	{
+		$val = new \php_mvc\Validation();
+		$val->set_rule('url', 'http://az.com')->set_rule('min_length', 'httpss', 5);
+		var_dump($val->validate());
+		print_r($val->get_errors());
 		$view = \php_mvc\View::get_instance();
 		
 		$view->username = 'yavcho';
