@@ -4,7 +4,8 @@ namespace \php_mvc\Routers;
 
 class JsonRPCRouter implements \php_mvc\Routers\IRouter {
 	private $map = array();
-	private $request_id = ;
+	private $request_id;
+	private $post = array();
 
 	public function __construct()
 	{
@@ -23,6 +24,11 @@ class JsonRPCRouter implements \php_mvc\Routers\IRouter {
 		{
 			$this->map = $arr;
 		}
+	}
+
+	public function get_post()
+	{
+		return $this->post;
 	}
 
 	public function get_URI()
@@ -51,6 +57,7 @@ class JsonRPCRouter implements \php_mvc\Routers\IRouter {
 			if ($this->map[$request['method']]) 
 			{
 				$this->request_id = $request['id'];
+				$this->post = $request['params'];
 				return $this->map[$request['method']];
 			}
 			else

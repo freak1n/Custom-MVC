@@ -3,6 +3,11 @@ namespace php_mvc\Routers;
 
 class DefaultRouter implements \php_mvc\Routers\IRouter {
 	
+	public function get_post()
+	{
+		return $_POST;
+	}
+
 	public function get_URI()
 	{
 		

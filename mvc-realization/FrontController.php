@@ -68,6 +68,7 @@ class FrontController {
 			throw new \Exception("Default route missing");
 		}
 		
+		$input = \php_mvc\InputData::get_instance();
 		// Exploding URI for division controller and method
 		$_params = explode('/', $_uri);
 		
@@ -79,8 +80,10 @@ class FrontController {
 			if(isset($_params[1]))
 			{
 				$this->method = strtolower($_params[1]);
-				// За да останат get параметрите
 				unset($_params[0], $_params[1]);
+				$input->set_get(array_values($_params));
+				
+				// За да останат get параметрите
 				$this->params = array_values($_params);
 			}
 			else 
@@ -106,15 +109,11 @@ class FrontController {
 			}
 		}
 
+		$input->set_post($this->router->get_post());
 		// TODO fix it
 		$f = $this->name_space.'\\'.ucfirst($this->controller);
 		$new_controller = new $f();
 		$new_controller->{$this->method}();
-		
-		// var_dump($new_controller);
-		/*echo $this->name_space.'<br />';
-		echo $this->controller.'<br />';
-		echo $this->method;*/
 	}	
 
 	public function get_default_controller()

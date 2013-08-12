@@ -165,4 +165,4 @@ class Validation {
 		}	
 		throw new \Exception("Invalid validation function", 1);
 	}
-}';'
+}
