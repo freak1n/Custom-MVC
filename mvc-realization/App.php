@@ -167,16 +167,16 @@ class App {
 		}
 		else
 		{
-			$this->display_error($ex->get_code());
+			$this->display_error($ex->getCode());
 		}
 	}
 
-	public function display_error($errors)
+	public function display_error($error)
 	{
 		try 
 		{
 			$view = \php_mvc\View::get_instance();
-			$view->display('errors'.$error);	
+			$view->display('errors/'.$error);	
 		} 
 		catch (Exception $e) 
 		{
