@@ -62,6 +62,7 @@ class JsonRPCRouter implements \php_mvc\Routers\IRouter {
 			}
 			else
 			{
+				// 501 - not implemented
 				throw new \Exception("Method not found", 501);
 			}
 		}	

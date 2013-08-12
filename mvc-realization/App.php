@@ -11,6 +11,8 @@ class App {
 
 	private function __construct()
 	{
+		set_exception_handler(array($this, 'exception_handler'));
+
 		\php_mvc\Loader::register_namespace('php_mvc', dirname(__FILE__).DIRECTORY_SEPARATOR);
 		\php_mvc\Loader::register_autoload();
 		$this->config = \php_mvc\Config::get_instance();
@@ -155,5 +157,32 @@ class App {
 		{
 			$this->session->save_session();
 		}		
+	}
+
+	public function exception_handler(\Exception $ex)
+	{
+		if ($this->config AND $this->config->app['display_exception'] == true) 
+		{
+			echo '<pre>'.printf($ex, true).'</pre>';
+		}
+		else
+		{
+			$this->display_error($ex->get_code());
+		}
+	}
+
+	public function display_error($errors)
+	{
+		try 
+		{
+			$view = \php_mvc\View::get_instance();
+			$view->display('errors'.$error);	
+		} 
+		catch (Exception $e) 
+		{
+			\php_mvc\Common::header_status($error);
+			echo '<h1>'.$error.'</h1>';
+			exit;
+		}
 	}
 }
